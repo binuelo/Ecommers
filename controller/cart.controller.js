@@ -6,6 +6,8 @@ const { Product } = require("../models/product.models");
 // Utils
 const { catchAsync } = require("../utils/catchAsync.util");
 
+const { protectSession } = require("../middlewares/auth.middleware");
+
 const AddProduct = catchAsync(async (req, res, next) => {
   const { productId, quantity } = req.body;
   const { carts } = req;
@@ -154,6 +156,7 @@ const DeleteCart = catchAsync(async (req, res, next) => {
       },
     }
   );
+
   console.log(productincartid.productId);
 
   res.status(201).json({
@@ -182,7 +185,8 @@ const Purchased = catchAsync(async (req, res, next) => {
     include: [{ model: Product, attributes: ["price", "quantity"] }],
     where: { status: "purchased" },
   });
-  console.log(ttProduct.price);
+  console.log(ttProduct);
+  //await new Email(email).sendWelcome();
   res.status(201).json({ status: "success", ttProduct });
 });
 module.exports = {

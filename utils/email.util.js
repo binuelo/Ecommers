@@ -55,7 +55,7 @@ class Email {
     await this.send("welcome", "Welcome to our app", { name });
   }
 
-  async sendTotal(quantity, price) {
+  async sendTotal(Product, total) {
     await this.send("Total", "You have created a new post", {
       quantity,
       price,

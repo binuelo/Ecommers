@@ -5,8 +5,10 @@ const { Product } = require("../models/product.models");
 
 // Utils
 const { catchAsync } = require("../utils/catchAsync.util");
+const { AppError } = require("../utils/appError.util");
+const { Email } = require("../utils/email.util");
 
-const { protectSession } = require("../middlewares/auth.middleware");
+//const { protectSession } = require("../middlewares/auth.middleware");
 
 const AddProduct = catchAsync(async (req, res, next) => {
   const { productId, quantity } = req.body;
@@ -166,6 +168,9 @@ const DeleteCart = catchAsync(async (req, res, next) => {
 });
 
 const Purchased = catchAsync(async (req, res, next) => {
+  const { sessionUser } = req;
+  console.log(sessionUser.email);
+
   const { carts } = req;
   const idcart = carts.id;
 
@@ -185,7 +190,8 @@ const Purchased = catchAsync(async (req, res, next) => {
     include: [{ model: Product, attributes: ["price", "quantity"] }],
     where: { status: "purchased" },
   });
-  console.log(ttProduct);
+
+  //console.log(ttProduct);
   //await new Email(email).sendWelcome();
   res.status(201).json({ status: "success", ttProduct });
 });
